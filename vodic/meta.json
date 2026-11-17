@@ -1,0 +1,47 @@
+{
+  "info": {
+    "id": "zburger",
+    "guideKey": "zb-guide-done",
+    "storageKey": "z-burger-bg",
+    "fulfillments": [
+      "delivery",
+      "pickup"
+    ],
+    "sizes": 5,
+    "name": "Ž Burger",
+    "address": "Cetinjska 15, Beograd",
+    "phone": "063 891 7159",
+    "hours": "Svaki dan od 12h · Vračar do 23h, Dorćol dok ne prodamo sve",
+    "instagram": "https://www.instagram.com/zburgerr/",
+    "logo": "logo.png",
+    "deliveryFee": 250,
+    "cardPayment": [],
+    "locations": 2,
+    "categories": 7,
+    "menu": "static",
+    "menuItems": 35,
+    "closedToday": false,
+    "soldOutToday": [],
+    "orders": "local",
+    "tenantPath": "zburger",
+    "emulator": false
+  },
+  "style": {
+    "bg": "#0A0A0A",
+    "card": "#1A1A1A",
+    "inset": "#121212",
+    "line": "#333333",
+    "primary": "#FECD08",
+    "onPrimary": "#0A0A0A",
+    "dark": "#F4F1EA",
+    "dark2": "#FFFFFF",
+    "cta": "#C42E1C",
+    "ink": "#F4F1EA",
+    "ink2": "#B5B0A6",
+    "font": "\"League Gothic\", \"Oswald\", \"Arial Narrow\", \"Impact\", sans-serif",
+    "tracking": "0.02em",
+    "case": "uppercase",
+    "weight": "400",
+    "scale": "1"
+  }
+}

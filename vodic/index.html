@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ž Burger · vodič kroz aplikaciju</title>
+<meta name="description" content="Kako radi aplikacija za online poručivanje napravljena za Ž Burger: gost, kuhinja, vlasnik.">
+<meta name="theme-color" content="#F4F1EA">
+<link rel="icon" href="https://vukasin00.github.io/z-burger-bg/favicon.png">
+<meta property="og:title" content="Ž Burger · Vaša aplikacija za poručivanje">
+<meta property="og:description" content="Vodič kroz sistem: kako gost poručuje, kako kuhinja prima porudžbine i šta vlasnik vidi.">
+<meta property="og:image" content="https://vukasin00.github.io/z-burger-bg/icon-512.png">
+<style>
+/* self-hosted display font — League Gothic, the heading face of zburger.rs (latin + latin-ext for Serbian diacritics); https://vukasin00.github.io/z-burger-bg/ is filled in by vite.config.ts */
+@font-face {
+  font-family: 'League Gothic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://vukasin00.github.io/z-burger-bg/fonts/league-gothic-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'League Gothic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://vukasin00.github.io/z-burger-bg/fonts/league-gothic-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+  :root{--bg:#0A0A0A;--card:#1A1A1A;--inset:#121212;--line:#333333;--primary:#FECD08;--on-primary:#0A0A0A;--dark:#F4F1EA;--dark2:#FFFFFF;--cta:#C42E1C;--ink:#F4F1EA;--ink2:#B5B0A6;--display:"League Gothic", "Oswald", "Arial Narrow", "Impact", sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:17px}
+  .wrap{max-width:680px;margin:0 auto;padding:0 20px}
+  h1,h2,h3,.big{font-family:var(--display);font-weight:400;letter-spacing:0.02em;text-transform:uppercase;line-height:1.06}
+  h1{font-size:clamp(36px,9.5vw,58px)}
+  h2{font-size:clamp(27px,7.0vw,40px);margin-bottom:10px}
+  h3{font-size:22px}
+  p{color:var(--ink2)}
+  .eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--cta);margin-bottom:8px}
+  .lead{font-size:19px;color:var(--ink)}
+  .dark{background:var(--dark);color:var(--bg)}
+  .dark p,.dark li{color:var(--bg);opacity:.82}
+  .dark .lead{color:var(--bg);opacity:1}
+  .alt{background:var(--inset)}
+  section{padding:40px 0}
+  header.hero{padding:44px 0 36px}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:22px}
+  .brand img{height:56px;width:auto;max-width:200px;object-fit:contain;border-radius:14px}
+  .brand span{font-size:13px;font-weight:600;opacity:.75}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+  .pill{background:var(--primary);color:var(--on-primary);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+  .btns{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+  .btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:15px 18px;border-radius:16px;font-weight:700;text-decoration:none;font-size:16px;text-align:center}
+  .btn-cta{background:var(--cta);color:#fff}
+  .btn-primary{background:var(--primary);color:var(--on-primary)}
+  .btn-ghost{background:transparent;color:var(--bg);border:2px solid color-mix(in srgb,var(--bg) 40%,transparent)}
+  .small{font-size:13px}
+  .toc{display:flex;gap:8px;overflow-x:auto;padding:12px 20px;scrollbar-width:none;background:var(--bg);position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line)}
+  .toc::-webkit-scrollbar{display:none}
+  .toc a{white-space:nowrap;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;color:var(--ink);text-decoration:none}
+  .num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--cta);color:#fff;font-weight:800;font-size:17px;margin-bottom:10px}
+  ul{padding-left:20px;margin:12px 0 0}
+  li{color:var(--ink2);margin-bottom:6px}
+  b{font-weight:700;color:inherit}
+  .strip{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;padding:18px 20px 6px;margin:0 -20px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .strip::-webkit-scrollbar{display:none}
+  .shot{flex:0 0 72%;max-width:300px;scroll-snap-align:center}
+  .shot img{width:100%;height:auto;border-radius:22px;display:block;background:var(--dark2);box-shadow:0 10px 30px -14px rgba(0,0,0,.45)}
+  .shot p{font-size:13px;margin-top:8px;text-align:center}
+  .tab{margin-top:18px}
+  .tab img{width:100%;height:auto;border-radius:14px;display:block;cursor:zoom-in;box-shadow:0 10px 30px -14px rgba(0,0,0,.45)}
+  .tab p{font-size:13px;margin-top:8px}
+  .hint{font-size:12px;color:var(--ink2);margin-top:10px}
+  .dark .hint{color:var(--bg);opacity:.7}
+  .steps,.cards{display:grid;gap:12px;margin-top:18px}
+  .step{background:var(--inset);border-radius:18px;padding:18px}
+  .dark .step{background:color-mix(in srgb,var(--bg) 12%,var(--dark))}
+  .step .big{font-size:34px;color:var(--cta);line-height:1}
+  .step h3,.card h3{margin:4px 0 6px}
+  .step p,.card p{font-size:15px}
+  .card{background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--line)}
+  .price{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+  .price .big{font-size:76px;color:var(--cta);line-height:1}
+  a{color:var(--cta)}
+  footer{padding:30px 0 60px;font-size:13px;color:var(--ink2)}
+  .lb{position:fixed;inset:0;background:rgba(10,10,10,.96);display:none;z-index:50;overflow:auto;-webkit-overflow-scrolling:touch}
+  .lb.on{display:block}
+  .lb img{display:block;width:auto;max-width:none;min-width:100%;margin:0 auto}
+  .lb .close{position:fixed;top:14px;right:14px;background:#fff;color:#111;border:0;border-radius:999px;padding:10px 16px;font-weight:700;font-size:15px;z-index:51}
+  @media (min-width:700px){.steps,.cards{grid-template-columns:1fr 1fr}.btns{flex-direction:row}.btn{flex:1}.shot{flex-basis:46%}}
+</style>
+</head>
+<body>
+
+<header class="hero dark">
+  <div class="wrap">
+    <div class="brand"><img src="https://vukasin00.github.io/z-burger-bg/logo.png" alt="Ž Burger"><span>Napravljeno za Ž Burger</span></div>
+    <p class="eyebrow">Vodič kroz sistem</p>
+    <h1>Vaša aplikacija za online poručivanje</h1>
+    <p class="lead" style="margin-top:14px">Gost poruči sa telefona za minut. Kuhinja vidi porudžbinu istog trenutka. Bez provizije po porudžbini.</p>
+    <div class="pills"><span class="pill">Gost: telefon</span><span class="pill">Kuhinja: tablet ili telefon</span><span class="pill">Vlasnik: statistika i meni</span></div>
+    <div class="btns">
+      <a class="btn btn-cta" href="https://vukasin00.github.io/z-burger-bg/">Probajte aplikaciju kao gost</a>
+      <a class="btn btn-ghost" href="https://vukasin00.github.io/z-burger-bg/kuhinja">Otvorite ekran kuhinje</a>
+    </div>
+    <p class="small" style="margin-top:16px">Ovo je demo sa Vašim menijem. Slobodno poručite: porudžbina ostaje samo na Vašem telefonu i niko je ne dobija. Zatim u istom pregledaču otvorite kuhinju i videćete kako stiže.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#kako">Kako radi</a><a href="#gost">Gost</a><a href="#korpa">Korpa</a><a href="#dostava">Dostava</a><a href="#placanje">Plaćanje</a><a href="#pracenje">Praćenje</a><a href="#kuhinja">Kuhinja</a><a href="#danas">Danas</a><a href="#statistika">Statistika</a><a href="#meni">Meni</a><a href="#kurir">Dostavljač</a><a href="#ponuda">Ponuda</a>
+</nav>
+
+<section id="kako">
+  <div class="wrap">
+    <p class="eyebrow">Kako radi</p>
+    <h2>Tri ekrana, jedan tok</h2>
+    <p>Gost poruči, kuhinja prihvati, gost prati. Nema poziva, nema prepisivanja adrese.</p>
+    <div class="strip">
+      <div class="shot"><img src="img/home-added.jpg" alt="Gost dodaje u korpu" loading="lazy"><p><b>1 · Gost</b> otvori link, izabere i doda u korpu</p></div>
+      <div class="shot"><img src="img/kuhinja-tel.jpg" alt="Kuhinja na telefonu" loading="lazy"><p><b>2 · Kuhinja</b> čuje zvono, prihvati i zada vreme</p></div>
+      <div class="shot"><img src="img/status2.jpg" alt="Gost prati status" loading="lazy"><p><b>3 · Gost</b> uživo vidi: u pripremi, spremna, na putu</p></div>
+    </div>
+    <p class="hint">← prevucite slike levo-desno →</p>
+  </div>
+</section>
+
+<section id="gost" class="alt">
+  <div class="wrap">
+    <span class="num">1</span>
+    <p class="eyebrow">Gost · prvo otvaranje i meni</p>
+    <h2>Vodič u tri koraka, pa meni na jedan ekran</h2>
+    <p>Novog gosta dočeka kratak vodič. Kasnije je dostupan iz dugmeta „?“.</p>
+    <div class="strip">
+      <div class="shot"><img src="img/tut1.jpg" alt="Vodič korak 1" loading="lazy"><p>Prevuci levo ili desno: tako se lista meni</p></div>
+      <div class="shot"><img src="img/tut2.jpg" alt="Vodič korak 2" loading="lazy"><p>Odaberi veličinu: cena se menja odmah</p></div>
+      <div class="shot"><img src="img/tut3.jpg" alt="Vodič korak 3" loading="lazy"><p>Dovrši narudžbinu: gotovo za minut</p></div>
+      <div class="shot"><img src="img/home.jpg" alt="Početni ekran" loading="lazy"><p>Jedan proizvod po ekranu, velika fotografija</p></div>
+      <div class="shot"><img src="img/home-added.jpg" alt="Dodato u korpu" loading="lazy"><p>Brojač na korpi i dugme sa iznosom</p></div>
+    </div>
+    <ul>
+      <li>Ceo Vaš meni po kategorijama, sa sastojcima i cenama</li>
+      <li>Oznake: Preporuka, specijalitet kuće, ljutina; akcijska cena sa precrtanom redovnom</li>
+      <li><b>Početni ekran prilagođavamo Vašim željama</b>: redosled, istaknuti proizvod, akcija dana, boje</li>
+    </ul>
+  </div>
+</section>
+
+<section id="korpa">
+  <div class="wrap">
+    <span class="num">2</span>
+    <p class="eyebrow">Gost · korpa</p>
+    <h2>Količine, napomena po stavci, jasan iznos</h2>
+    <div class="strip">
+      <div class="shot"><img src="img/korpa.jpg" alt="Korpa" loading="lazy"><p>Plus/minus, brisanje, koraci 1-2-3 na vrhu</p></div>
+      <div class="shot"><img src="img/korpa-note.jpg" alt="Napomena" loading="lazy"><p>„Dodaj napomenu“: bez luka, ljuto, ekstra sos</p></div>
+    </div>
+    <p>Napomena stiže kuhinji istaknuta na kartici. Korpa se pamti i kad gost zatvori aplikaciju.</p>
+  </div>
+</section>
+
+<section id="dostava" class="alt">
+  <div class="wrap">
+    <span class="num">3</span>
+    <p class="eyebrow">Gost · dostava ili preuzimanje</p>
+    <h2>Adresa jednom, bez diktiranja preko telefona</h2>
+    <div class="strip">
+      <div class="shot"><img src="img/dostava-full.jpg" alt="Forma za dostavu" loading="lazy"><p><b>Dostava</b>: ime, telefon, adresa, sprat/stan, napomena</p></div>
+      <div class="shot"><img src="img/preuzimanje.jpg" alt="Preuzimanje" loading="lazy"><p><b>Preuzimanje</b>: samo ime i telefon; gost vidi adresu i radno vreme</p></div>
+    </div>
+    <p>Cenu dostave, zone i minimalni iznos podešavamo po Vašem cenovniku. Lokal bira: samo preuzimanje, samo dostava ili oboje.</p>
+  </div>
+</section>
+
+<section id="placanje">
+  <div class="wrap">
+    <span class="num">4</span>
+    <p class="eyebrow">Gost · plaćanje i potvrda</p>
+    <h2>Plaćanje pri preuzimanju, bez registracije</h2>
+    <div class="strip">
+      <div class="shot"><img src="img/placanje.jpg" alt="Plaćanje" loading="lazy"><p>Pregled stavki, adrese i ukupnog iznosa</p></div>
+    </div>
+    <p>Jedno dugme „Poruči“, bez naloga i lozinki. Plaćanje karticom na terminalu ili online plaćanje uključujemo kad Vam odgovara.</p>
+  </div>
+</section>
+
+<section id="pracenje" class="alt">
+  <div class="wrap">
+    <span class="num">5</span>
+    <p class="eyebrow">Gost · praćenje porudžbine</p>
+    <h2>Gost vidi status uživo i ne zove da pita „gde je hrana“</h2>
+    <div class="strip">
+      <div class="shot"><img src="img/status1.jpg" alt="Status primljena" loading="lazy"><p>Broj porudžbine, čeka se potvrda kuhinje</p></div>
+      <div class="shot"><img src="img/status-priprema.jpg" alt="Status u pripremi" loading="lazy"><p>Kuhinja prihvatila: gost vidi za koliko je gotovo</p></div>
+      <div class="shot"><img src="img/status2.jpg" alt="Status na putu" loading="lazy"><p>Primljena → U pripremi → Spremna → Na putu</p></div>
+    </div>
+    <p>Status se menja istog trenutka kad kuhinja dodirne dugme.</p>
+  </div>
+</section>
+
+<section id="kuhinja" class="dark">
+  <div class="wrap">
+    <span class="num">6</span>
+    <p class="eyebrow">Kuhinja · tablet ili telefon</p>
+    <h2>Tabla: Nove, U pripremi, Spremne</h2>
+    <p>Sve što kuhinja treba da zna na jednom ekranu. Nova porudžbina zvoni dok se ne prihvati.</p>
+    <div class="tab"><img src="img/kuhinja-tablet.jpg" alt="Kuhinja na tabletu" data-zoom loading="lazy"><p>Tablet: tri kolone. Kartica = broj, vreme, dostava/preuzimanje, stavke, napomene, kupac, adresa, iznos.</p></div>
+    <p class="hint">Dodirnite sliku za uvećanje</p>
+    <div class="tab"><img src="img/kuhinja-prihvacena.jpg" alt="Prihvaćena porudžbina" data-zoom loading="lazy"><p><b>Prihvati · gotova za 25 min</b>: kartica prelazi u „U pripremi“, gost dobija vreme.</p></div>
+    <div class="tab"><img src="img/kuhinja-ceka.jpg" alt="Spremna porudžbina" data-zoom loading="lazy"><p><b>Spremna</b> → „Predato dostavljaču“ ili „Preuzeto“. Završene se slažu u dnu.</p></div>
+    <div class="strip">
+      <div class="shot"><img src="img/kuhinja-tel.jpg" alt="Kuhinja na telefonu" loading="lazy"><p>Ista tabla na običnom telefonu</p></div>
+      <div class="shot"><img src="img/podesavanja.jpg" alt="Podešavanja kuhinje" loading="lazy"><p>Vreme pripreme, zvuk, obaveštenja</p></div>
+    </div>
+    <ul>
+      <li>Isti podaci na svim uređajima u isto vreme: tablet u kuhinji, telefon kod vlasnika</li>
+      <li>„Dodaj na početni ekran“: aplikacija „Kuhinja“ preko celog ekrana, ekran ostaje upaljen</li>
+      <li>Zvono: 5 tonova, ponavljanje na 10 s dok se ne prihvati; dugmad za vreme pripreme po meri</li>
+    </ul>
+  </div>
+</section>
+
+<section id="danas" class="alt">
+  <div class="wrap">
+    <span class="num">7</span>
+    <p class="eyebrow">Kuhinja · „Danas“</p>
+    <h2>Danas ne radimo ili je nešto nestalo: jedan prekidač</h2>
+    <div class="tab"><img src="img/danas.jpg" alt="Panel Danas" data-zoom loading="lazy"><p>„Primamo porudžbine“ i prekidač po veličini. Važi odmah za sve goste, u ponoć se samo vraća.</p></div>
+    <div class="strip"><div class="shot"><img src="img/rasprodato.jpg" alt="Rasprodato" loading="lazy"><p>Gost odmah vidi „Rasprodato“ i poruči nešto drugo</p></div></div>
+  </div>
+</section>
+
+<section id="statistika">
+  <div class="wrap">
+    <span class="num">8</span>
+    <p class="eyebrow">Vlasnik · istorija i statistika</p>
+    <h2>Brojke koje vlasnik hoće da zna, bez Excela</h2>
+    <div class="tab"><img src="img/istorija.jpg" alt="Istorija narudžbina" data-zoom loading="lazy"><p><b>Istorija</b> po danu: sve / završene / otkazane, promet, prosečno vreme pripreme.</p></div>
+    <div class="tab"><img src="img/statistika.jpg" alt="Statistika" data-zoom loading="lazy"><p><b>Statistika</b> za period: promet, najtraženiji artikli, špic sati, posete sajtu i koliko poseta postane narudžbina.</p></div>
+  </div>
+</section>
+
+<section id="meni" class="alt">
+  <div class="wrap">
+    <span class="num">9</span>
+    <p class="eyebrow">Vlasnik · meni editor</p>
+    <h2>Meni menjate sami za minut</h2>
+    <div class="strip">
+      <div class="shot"><img src="img/meni-lista.jpg" alt="Lista proizvoda" loading="lazy"><p>Redosled prevlačenjem, „Novi proizvod“, svaka promena se čuva odmah</p></div>
+      <div class="shot"><img src="img/meni-izmena.jpg" alt="Izmena proizvoda" loading="lazy"><p>Fotografija, sastojci, cena, oznake, akcija sa rokom, sakrij proizvod</p></div>
+    </div>
+    <p>Nova cena, nova slika ili akcija vikendom: promena je odmah kod svih gostiju, bez programera.</p>
+  </div>
+</section>
+
+<section id="kurir" class="dark">
+  <div class="wrap">
+    <span class="num">10</span>
+    <p class="eyebrow">Dostava · Vaš dostavljač</p>
+    <h2>Radi sa Vašim vozačima ili sa kurirskom službom</h2>
+    <div class="steps">
+      <div class="step"><div class="big">1</div><h3>Prihvati</h3><p>Kuhinja prihvati porudžbinu za dostavu i zada vreme.</p></div>
+      <div class="step"><div class="big">2</div><h3>Vozač zna sve</h3><p>Adresa, telefon, stavke i iznos za naplatu idu vozaču jednim dodirom (Viber, WhatsApp, SMS) ili automatski mejlom kurirskoj službi.</p></div>
+      <div class="step"><div class="big">3</div><h3>Na putu</h3><p>„Predato dostavljaču“ i gost vidi da je hrana krenula.</p></div>
+    </div>
+    <div class="strip"><div class="shot"><img src="img/prosledi.jpg" alt="Prosleđivanje vozaču" loading="lazy"><p>Kopiraj · Viber · WhatsApp · SMS</p></div></div>
+    <p>Ko vozi i po kojoj ceni, dogovaramo zajedno: Vaši vozači, služba sa kojom već radite ili partner koga predložimo.</p>
+  </div>
+</section>
+
+<section id="brend">
+  <div class="wrap">
+    <p class="eyebrow">Po meri Vašeg lokala</p>
+    <h2>Vaš domen, Vaš logo, Vaše boje</h2>
+    <div class="cards">
+      <div class="card"><h3>Brend</h3><p>Logo, boje, font i poruke statusa su Vaši, kao u ovom demou. Domen tipa imelokala.rs.</p></div>
+      <div class="card"><h3>Početna po želji</h3><p>Šta gost prvo vidi: istaknuti proizvod, akcija dana, redosled, kategorije.</p></div>
+      <div class="card"><h3>Način rada</h3><p>Preuzimanje, dostava ili oboje; zone i cene dostave; gotovina i/ili kartica; više lokala u istoj aplikaciji.</p></div>
+      <div class="card"><h3>Bez prodavnice aplikacija</h3><p>„Dodaj na početni ekran“ za goste i ikonica „Kuhinja“ za osoblje. Radi na svakom telefonu.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="ponuda" class="alt">
+  <div class="wrap">
+    <p class="eyebrow">Ponuda</p>
+    <div class="price"><span class="big">290 €</span><span style="font-weight:700">jednom, sve uključeno</span></div>
+    <p class="lead" style="margin-top:6px">Kompletna aplikacija za Ž Burger. Bez provizije po porudžbini i bez mesečne pretplate.</p>
+    <div class="cards">
+      <div class="card"><h3>Šta je uključeno</h3><p>Aplikacija za goste na Vašem domenu · ceo meni unet i proveren · dostava i preuzimanje po Vašim pravilima · ekran kuhinje · praćenje porudžbine uživo · meni editor · statistika · obuka osoblja (30 min)</p></div>
+      <div class="card"><h3>Kako ide dalje</h3><p>Demo već imate. Prođemo zajedno meni, cene i fotografije (20 minuta, kod Vas u lokalu ili telefonom) → za nekoliko dana ste uživo. Plaćanje 50 % na dogovor, 50 % kad aplikacija proradi.</p></div>
+      <div class="card"><h3>Dostavljač po dogovoru</h3><p>Vaši vozači, kurirska služba sa kojom već radite ili partner koga predložimo. Uslove dostave dogovaramo zajedno, a aplikacija se prilagođava: cena, zone, automatski poziv kuriru.</p></div>
+    </div>
+    <div class="btns">
+      <a class="btn btn-cta" href="https://vukasin00.github.io/z-burger-bg/">Otvorite svoju aplikaciju</a>
+      <a class="btn btn-primary" href="https://rs.linkedin.com/in/vukasin-stanisic">LinkedIn: Vukašin Stanišić</a>
+    </div>
+    <p style="margin-top:18px"><b>Vukašin Stanišić</b> · Team Lead / Full-Stack inženjer. Rado dođemo do Vas i pokažemo sve uživo na Vašem telefonu. Dovoljno je da odgovorite na poruku kojom ste dobili ovaj link.</p>
+  </div>
+</section>
+
+<footer><div class="wrap">Snimci ekrana su iz aplikacije napravljene za Ž Burger; porudžbine na njima su probne.</div></footer>
+
+<div class="lb" id="lb"><button class="close" type="button">Zatvori ✕</button><img alt=""></div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'),im=lb.querySelector('img');
+  document.querySelectorAll('img[data-zoom]').forEach(function(el){
+    el.addEventListener('click',function(){im.src=el.src;im.alt=el.alt;im.style.width=Math.max(window.innerWidth*1.8,1200)+'px';lb.classList.add('on');lb.scrollLeft=0;});
+  });
+  lb.querySelector('.close').addEventListener('click',function(){lb.classList.remove('on');im.src='';});
+})();
+</script>
+</body>
+</html>

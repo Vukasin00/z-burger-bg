@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="sr" data-tenant="zburger">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+    <meta name="description" content="Poruči burger iz Ž Burgera — četvorostrukog pobednika Beogradskog burger festivala. Cetinjska 15 i Koče Kapetana 2, Beograd. Dostava ili preuzimanje." />
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Ž Burger" />
+    <link rel="icon" href="/z-burger-bg/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/z-burger-bg/apple-touch-icon.png" />
+    <title>Ž Burger · Burgeri na Dorćolu i Vračaru, Beograd</title>
+    <style>
+      /* Splash painted before the JS bundle arrives (slow networks): brand colour + name, replaced by React. */
+      html, body, #root { height: 100%; margin: 0; }
+      body { background: var(--color-cream-100, #fff); }
+      .splash { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; color: var(--color-forest-800, #222); }
+      .splash-name { font-family: var(--font-display, sans-serif); font-weight: var(--display-weight, 400); font-size: calc(40px * var(--display-scale, 1)); letter-spacing: var(--display-tracking, 0.02em); text-transform: var(--display-case, none); }
+      .splash-sub { font: 600 12px -apple-system, BlinkMacSystemFont, system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.55; }
+    </style>
+  <style id="tenant-theme">
+ html[data-tenant="zburger"] {
+  --color-cream-50: #1A1A1A;
+  --color-cream-100: #0A0A0A;
+  --color-cream-200: #121212;
+  --color-cream-300: #333333;
+  --color-cream-400: #555555;
+  --color-azure-100: #2E2608;
+  --color-azure-200: #E5B800;
+  --color-azure-300: #FECD08;
+  --color-azure-400: #FFDA3D;
+  --color-on-primary: #0A0A0A;
+  --color-forest-950: #FFFFFF;
+  --color-forest-900: #F4F1EA;
+  --color-forest-800: #FFFFFF;
+  --color-forest-700: #EEEBE4;
+  --color-forest-600: #C9C5BC;
+  --color-forest-500: #A29E95;
+  --color-forest-400: #8C877E;
+  --color-flame-100: #3A1510;
+  --color-flame-200: #6E2216;
+  --color-flame-500: #C42E1C;
+  --color-flame-600: #FF6A4D;
+  --color-flame-700: #FF9C85;
+  --color-tomato-500: #FF6B5E;
+  --color-tomato-100: #3A1F1D;
+  --color-basil-500: #5FB36B;
+  --color-basil-100: #1C3A22;
+  --color-notice-500: #F2B134;
+  --color-notice-100: #3A2D10;
+  --color-ink: #F4F1EA;
+  --color-ink-2: #B5B0A6;
+  --color-ink-3: #8C877E;
+  --font-display: "League Gothic", "Oswald", "Arial Narrow", "Impact", sans-serif;
+  --display-scale: 1;
+  --display-tracking: 0.02em;
+  --display-case: uppercase;
+  --display-weight: 400;
+  --motif: url(/z-burger-bg/motif.webp) center top / 120px auto repeat, linear-gradient(#0A0A0A, #0A0A0A);
+  --glass-bg: rgba(10, 10, 10, 0.82);
+ }
+/* self-hosted display font — League Gothic, the heading face of zburger.rs (latin + latin-ext for Serbian diacritics); /z-burger-bg/ is filled in by vite.config.ts */
+@font-face {
+  font-family: 'League Gothic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/z-burger-bg/fonts/league-gothic-latin-ext.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'League Gothic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/z-burger-bg/fonts/league-gothic-latin.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+    <link rel="preload" as="image" href="/z-burger-bg/pizzas/cheeseburger.webp" />
+    <link rel="preload" as="image" href="/z-burger-bg/logo.png" />
+    <script type="module" crossorigin src="/z-burger-bg/assets/main-BvkgbXp9.js"></script>
+    <link rel="stylesheet" crossorigin href="/z-burger-bg/assets/main-8aLNoPGg.css">
+  <link rel="manifest" href="/z-burger-bg/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/z-burger-bg/registerSW.js"></script></head>
+  <body>
+    <div id="root"><div class="splash"><span class="splash-name">Ž Burger</span><span class="splash-sub">Učitavanje</span></div></div>
+  </body>
+</html>

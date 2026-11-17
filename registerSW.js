@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/z-burger-bg/sw.js', { scope: '/z-burger-bg/' })})}
